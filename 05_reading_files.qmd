@@ -1,0 +1,71 @@
+---
+title: "Reading and writing data"
+---
+
+# Objective
+
+## How to read in data and write data back to a CSV file
+
+The first and most important thing to be able to do is to read in a file - do stuff - and then save what you did to that file in the output directory. We will practice reading in CSV and Excel files.
+
+## Data for the exercise
+
+[This page has a link to all of the data files](99_example_data_files.qmd)
+
+We will use a mock data file that uses M&M's
+
+[M&M CSV file](data/mms.csv) and also the [M&M Excel file](data/mms.xlsx)
+
+## Load Libraries
+
+```{r message=FALSE, warning=FALSE}
+# load the libraries each time you restart R
+library(tidyverse)
+library(lubridate)
+library(readxl)
+library(scales)
+library(skimr)
+library(janitor)
+library(patchwork)
+```
+
+## Read in the file
+
+```{r 03_read_data}
+# Read in file using tidyverse code-----
+mm.df <- read_csv("data/mms.csv")
+```
+
+#### Read in excel files
+
+Note that you can read in excel files in the same way.
+
+```{r}
+# Note you can read in excel files just as easy
+  mm_excel.df <- read_excel("data/mms.xlsx")
+```
+
+## Look at dataframe structure
+
+One way is to click the blue trianlge in the environment tab in the upper right\
+You can also use code to inspect the structure of the dataset
+
+```{r}
+# data Structure
+str(mm.df)
+# or
+glimpse(mm.df)
+```
+
+## Saving files
+
+Before we go too far it is often important to save the modified data\
+We can use the read_r package to do this with write_csv
+
+```{r}
+# Saving files -----
+# We can save the file we just read in using 
+# Saving dataframes -----
+# lets say you have made a lot of changes and its now time to save the dataframe
+write_csv(mm.df, "output/mm_output.csv")
+```
