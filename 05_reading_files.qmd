@@ -1,71 +1,97 @@
 ---
-title: "Reading and writing data"
+title: "Reading and Writing Data"
+description: "Learn to read data from various file types and save your processed data."
+format:
+  html:
+    toc: true
+    toc-depth: 2
 ---
 
 # Objective
 
-## How to read in data and write data back to a CSV file
+Learn how to read data from different file types, process it, and then save your results to an output directory. We'll cover:
 
-The first and most important thing to be able to do is to read in a file - do stuff - and then save what you did to that file in the output directory. We will practice reading in CSV and Excel files.
+-   CSV files
+-   Excel files
+-   Tab-delimited files
+-   Space-delimited files
 
-## Data for the exercise
+For more sample data files, see the [Dataframes page](99_example_data_files.qmd).
 
-[This page has a link to all of the data files](99_example_data_files.qmd)
+------------------------------------------------------------------------
 
-We will use a mock data file that uses M&M's
+# Load Required Libraries
 
-[M&M CSV file](data/mms.csv) and also the [M&M Excel file](data/mms.xlsx)
+We'll use `tidyverse` for CSV and delimited files, and `readxl` for Excel files.
 
-## Load Libraries
-
-```{r message=FALSE, warning=FALSE}
-# load the libraries each time you restart R
-library(tidyverse)
-library(lubridate)
-library(readxl)
-library(scales)
-library(skimr)
+``` r
+# Load necessary libraries
 library(janitor)
-library(patchwork)
+library(readxl)
+library(tidyverse)
 ```
 
-## Read in the file
+# Reading Data Files
+1. CSV Files
 
-```{r 03_read_data}
-# Read in file using tidyverse code-----
-mm.df <- read_csv("data/mms.csv")
+``` r
+# Read a CSV file
+mm_df <- read_csv("data/mms.csv")
 ```
 
-#### Read in excel files
-
-Note that you can read in excel files in the same way.
-
-```{r}
-# Note you can read in excel files just as easy
-  mm_excel.df <- read_excel("data/mms.xlsx")
+2. Excel Files
+``` r
+# Read an Excel file
+mm_excel_df <- read_excel("data/mms.xlsx")
 ```
 
-## Look at dataframe structure
+3. Tab-Delimited Files
 
-One way is to click the blue trianlge in the environment tab in the upper right\
-You can also use code to inspect the structure of the dataset
-
-```{r}
-# data Structure
-str(mm.df)
-# or
-glimpse(mm.df)
+``` r
+# Read a tab-delimited file (alternatively, use read_tsv)
+mm_tab_df <- read_delim("data/mms_tab.txt", delim = "\t")
 ```
 
-## Saving files
+4. Space-Delimited Files
 
-Before we go too far it is often important to save the modified data\
-We can use the read_r package to do this with write_csv
+``` r
+# Read a space-delimited file
+mm_space_df <- read_delim("data/mms_space.txt", delim = " ")
+```
 
-```{r}
-# Saving files -----
-# We can save the file we just read in using 
-# Saving dataframes -----
-# lets say you have made a lot of changes and its now time to save the dataframe
-write_csv(mm.df, "output/mm_output.csv")
+# Inspecting the Data
+After reading in a file, check its structure using:
+
+``` r
+# Quickly inspect the data
+glimpse(mm_df)
+# or 
+head(mm_df)
+```
+
+# Saving Processed Data
+Before saving your results, ensure the output directory exists. You can create it if needed:
+
+``` r
+# Create the output directory if it doesn't exist
+if (!dir.exists("output")) {
+  dir.create("output")
+}
+```
+
+Then, save your data frame as a CSV file:
+
+``` r 
+# Save the processed data to the output directory
+write_csv(mm_df, "output/mm_output.csv")
+```
+
+# Cleaning up messy or poorly formatted variable names
+
+To do this we will use janitor that has a lot of functions that automate this task.
+
+``` r
+# Read an Excel file
+mm_excel_df <- read_excel("data/mms.xlsx") %>%    
+              clean_names()       
 ```

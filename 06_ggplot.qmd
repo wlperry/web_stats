@@ -1,108 +1,126 @@
 ---
-title: "Plotting with GPlot"
+title: "Plotting with ggplot2"
+description: "An introduction to plotting with ggplot2 using tidyverse."
+format:
+  html:
+    toc: true
+    toc-depth: 2
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-# Objective
+# Introduction
 
-## How to read in excel file and plot the data using GGPlot.
+In this tutorial you will learn how to: - Read data from an Excel file.\
+- Create basic plots using **ggplot2**.\
+- Layer multiple geoms and add custom axis labels.
 
-## Data for the exercise
+For more sample data files, check out the [Data Files
+page](99_example_data_files.qmd).
 
-[This page has a link to all of the data files](99_example_data_files.qmd)
+------------------------------------------------------------------------
 
-We will use a mock data file that uses M&M's
+# Load Libraries
 
-[M&M CSV file](data/mms.csv) and also the [M&M Excel file](data/mms.xlsx)
+Before plotting, load the required libraries. If you haven't installed
+these packages, run the `install.packages()` commands separately.
 
-## Load Libraries
+``` r
+# Uncomment these lines if you need to install the packages:
+# install.packages("tidyverse")
+# install.packages("readxl")
 
-```{r message=FALSE, warning=FALSE}
-# load the libraries each time you restart R
-install.packages("tidyverse")
-library(tidyverse)
-library(lubridate)
-library(readxl)
-library(scales)
-install.packages("skimr")
-install.packages("janitor")
-install.packages("patchwork")
-library(skimr)
-library(janitor)
-library(patchwork)
+library(tidyverse)  # Loads ggplot2 and other tidyverse packages
+library(readxl)     # For reading Excel files
 ```
 
-## Read in the file
+# Reading the Data
 
-#### Read in excel files
+We’ll read a sample M&M dataset from an Excel file.
 
-Note that you can read in excel files in the same way.
+``` r
+# Read the M&M Excel file into a data frame called mm_df
+mm_df <- read_excel("data/mms.xlsx")
 
-```{r}
-# Note you can read in excel files just as easy
-  mm.df <- read_excel("data/mms.xlsx")
-  
-  head(mm.df)
+# View the first few rows to check the data
+head(mm_df)
 ```
 
-# GGPlot
+------------------------------------------------------------------------
 
-This script will go over a lot of the basics of creating graphs in GGPlot and later on we will go over how to do more specialized things. This is by no means a complete guide to GGPlot but will do most of the things that you will need to do in GGPlot. Any suggestions or recommendations of things to add would be welcome.
+# Introduction to ggplot2
 
-## Graphing data
+**ggplot2** builds plots in layers. The first layer sets up your data
+and aesthetics (what goes on the x‑ and y‑axes), and additional layers
+add geoms (graphical objects) like points or boxplots.
 
-I feel that graphing is the key to all data analysis. If you can look at your data you can begin to see patterns that you may have predicted and want to test statistically. You will also be able to see outliers that exist that might affect results faster than looking at summary statistics. You can also determine if the data is normally distributed and how the variances compare from one group to another.
+## Basic Scatter Plot
 
-Using proper GGPlot code you are supposed to have data = , y = and x = ....\
-I have found that these are not necessary *most of the time* and we can talk about this later.
+This example creates a simple scatter plot showing the relationship
+between candy color and diameter.
 
-### How to plot an XY plot
-
-This is a basic XY plot of the data and is one of the first steps in exploring data. Later on we will look at how to modify this plot to be easier to interpret.
-
-The dataframe comes first and the AES statement is the aesthetics or the x and y data you want to see. You can also add colors, shapes, fill, line types and some other things to map to the data in this statement.
-
-Try adding color = color inside the aes(x=color, y=diameter) statement. You can also try shape = color
-
-```{r}
-# GGplot uses layers to build a graph
-
-ggplot(data=mm.df, aes(x=color, y=diameter)) + # this sets up data 
-  geom_point() # this adds a geometry to present the data from above
+``` r
+# Create a scatter plot:
+# - data = mm_df: specifies the data frame to use.
+# - aes(x = color, y = diameter): maps the 'color' variable to the x-axis and 'diameter' to the y-axis.
+# - geom_point(): adds points for each observation.
+ggplot(data = mm_df, aes(x = color, y = diameter)) +
+  geom_point()
 ```
 
-Because GGPlot builds things in layers you can add other geoms to the plot. Below you should try this code and see what happens when you put in **`+`** after geom_line() and then add **`geom_boxplot(fill="blue")`**. Note try putting in before or after the **`geom_point()`** line.
+## Adding Layers
 
-```{r}
-# Add geom_point() -----
-# Add points to the graph below using geom_point()
-ggplot(mm.df, aes(x=color, y=diameter)) +
-  geom_point() 	
+You can combine multiple geoms to enrich your plot. Here, we add a
+boxplot behind the points.
 
+```         
+ggplot(mm_df, aes(x = color, y = diameter)) +
+  geom_boxplot(fill = "blue") +  # Adds a boxplot with blue fill for each candy color group.
+  geom_point()                   # Overlays the scatter plot on top.
 ```
 
-## Adding axes labels
+## Adding Axis Labels
 
-You can add in axes labels that are not special. Using the **`labs(x= " ", y = " ")`** statement. You can add in line breaks by putting in a **`\n`** in the statement that you have below.
+Custom axis labels help explain what your plot shows. Use the `labs()`
+function to add plain text labels.
 
-```{r}
-# Adding axes labels ----
-ggplot(mm.df, aes(x=color, y=diameter)) +
-  geom_boxplot(fill="blue") +
+``` r
+ggplot(mm_df, aes(x = color, y = diameter)) +
+  geom_boxplot(fill = "blue") +
   geom_point() +
-  labs(x = "Color", y = "Diameter")
-
+  labs(
+    x = "Candy Color",
+    y = "Candy Diameter (mm)"
+  )
 ```
 
-## Formatted axes labels
+## Formatted Axis Labels
 
-What I find really nice is being able to create formatted axes labels. You can do this a few ways but I have found the that the expression statement works the best for my needs. You can add in a `~` to add a space between symbols and a `*` will connect things without a space.
+For more advanced labeling, you can use expressions to format text. In
+the example below, the y-axis label is bold and includes the Greek
+letter µ.
 
-```{r}
-# Label expressions -----
-# Adding special formatting to labels
-ggplot(mm.df, aes(x=color, y=diameter)) +
+``` r
+
+ggplot(mm_df, aes(x = color, y = diameter)) +
   geom_boxplot() +
   geom_point() +
-  labs(x = "color", y = expression(bold("Diameter ("*mu*"*1000)")))
+  labs(
+    x = "Color",
+    y = expression(bold("Diameter (" * mu * "m)")) # it is als a code "\u00b5"
+  )
 
 ```
+
+# Summary
+
+In this guide, you learned how to:
+
+-   Load data from an Excel file.
+
+-   Create a basic scatter plot with ggplot2.
+
+-   Layer additional geoms (like boxplots) on your plot.
+
+-   Add plain and formatted axis labels

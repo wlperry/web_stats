@@ -1,31 +1,44 @@
 ---
 title: "Intro Stats 2024"
+description: "2024 R stats for biology students – an introduction to R, RStudio, and statistical analysis for biology."
+format: 
+  html:
+    toc: true
+    toc-depth: 2
 ---
 
-2024 R stats for biology students
+<!-- Optional: Centered Tidyverse hex sticker -->
 
-This is a seminar course on using R for common statistical tests that you might do in your thesis. This will be an initial introduction to R and RStudio using a lot of the materials from our introductory biostatistics course. This site will also serve as a repository for the course materials we cover and also the specialized statistics we cover at the end of the term that we will do for your specific work.
+<!-- Optional: Centered R logo -->
 
-I have found R to be a life changing program and use it nearly every day now.
+::: {style="text-align: center;"}
+<img src="https://www.r-project.org/logo/Rlogo.png" alt="R Logo" width="100"/>
+:::
 
-Here is a page with all the example data files - [Click HERE](99_example_data_files.qmd)
+# Introduction for R and tidyverse - for the Rogue R class
 
-Topics to be covered:
+Welcome to our seminar course on using R for common statistical tests that you might apply in your thesis research. This course serves as an introduction to R and RStudio, drawing from our introductory biostatistics curriculum. In addition, this site is a repository for all the course materials and the specialized analyses we'll cover later in the term.
 
--   [Resources that are super helpful in using R - a lot of links and ideas](01_resources.qmd)
+I have found R to be a life-changing tool and use it nearly every day. I'm excited to share these resources with you!
 
--   [Prior to class - setting up R and RStudio and installing essential librarie](02_installing_r.qmd)s
+For a complete list of example data files, please see the [Example Data Files page](99_example_data_files.qmd).
 
--   [Install packages and load libraries](03_installing_libraries.qmd)
+## Topics Covered
 
--   [Basics of project management](04_project_setup.qmd)
+####      [**R Resources** – Super helpful links and ideas](01_resources.qmd)
 
--   [Reading in and writing to files](05_reading_files.qmd)
+####      [**Setting Up R & RStudio** – Installation and essential libraries](02_installing_r.qmd)
 
--   [Plotting data - GGPlot basics](06_ggplot.qmd)
+####      [**Installing Packages & Libraries**](03_installing_libraries.qmd)
 
--   [Plotting - customizing plots in GGPlot](07_customize_ggplots.qmd)
+####      [**Project Management Basics**](04_project_setup.qmd)
 
--   [Plotting - summary statistics - mean and SE](08_ggplot_summary_plots.qmd)
+####      [**Reading & Writing Files**](05_reading_files.qmd)
 
--   
+####      [**GGPlot Basics** – Getting started with plots](06_ggplot.qmd)
+
+####      [**Customizing GGPlots**](07_customize_ggplots.qmd)
+
+####      [**Summary Statistics with GGPlot** – Mean and Standard Error plots](08_ggplot_summary_plots.qmd)
+
+#### 

@@ -1,13 +1,36 @@
 ---
 title: "R Resources"
+description: "A few resources to learn and master R."
+format: 
+  html:
+    toc: true
+    toc-depth: 2
 ---
 
-This is a set of resources I have found to be super helpful in learning R.
+# Introduction
 
-I will follow the ideas presented in [**R for Data Science (2e)**](https://r4ds.hadley.nz/)
+Welcome to **R Resources** – a curated list of materials that I have found incredibly helpful in learning R. In this site, you'll find links to books, websites, and forums that can guide you on your R journey.
 
-[![](/images/r4datascience.png){width="214"}](https://r4ds.hadley.nz/)
+------------------------------------------------------------------------
 
-A great resource for looking up issues is [StackOverflow](https://stackoverflow.com/) [![](/images/stackoverflow.png)](https://stackoverflow.com/)
+## Featured Resource: R for Data Science
 
-For help with statistics I found [R Companion](https://rcompanion.org/handbook/) to be a GREAT resource [![](/images/rcompanion.png)](https://rcompanion.org/handbook/)
+I highly recommend [**R for Data Science (2e)**](https://r4ds.hadley.nz/) as a starting point.
+
+[![](/images/r4datascience.png){width="214" alt="R for Data Science cover"}](https://r4ds.hadley.nz/)
+
+------------------------------------------------------------------------
+
+## Getting Help: StackOverflow
+
+When you run into issues or have questions, [StackOverflow](https://stackoverflow.com/) is an excellent resource for quick answers and community support.
+
+[![](/images/stackoverflow.png){width="214" alt="StackOverflow logo"}](https://stackoverflow.com/)
+
+------------------------------------------------------------------------
+
+## Learning Statistics with R Companion
+
+For a deeper dive into statistics with R, check out [R Companion](https://rcompanion.org/handbook/). It’s a fantastic guide to understanding and applying statistical methods in R.
+
+[![](/images/rcompanion.png){width="214" alt="R Companion logo"}](https://rcompanion.org/handbook/)

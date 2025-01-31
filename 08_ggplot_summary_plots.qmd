@@ -1,118 +1,186 @@
 ---
-title: "GGPlot summary plots"
+title: "ggplot2 Summary Plots: Mean & Standard Error"
+description: "Learn how to plot means and standard errors using ggplot2 and tidyverse."
+format:
+  html:
+    toc: true
+    toc-depth: 2
 ---
 
 # Objective
 
-## How to read in excel file and plot the data using GGPlot.
+In this guide you will learn how to: - Read in data from an Excel file. - Compute summary statistics (mean and standard error). - Create ggplot2 plots that display the mean and standard error using `stat_summary()`.
 
-## Data for the exercise
+# Data for the Exercise
 
-[This page has a link to all of the data files](99_example_data_files.qmd)
+We use a sample M&M dataset. For more sample data files, check out the [Data Files page](99_example_data_files.qmd).
 
-We will use a mock data file that uses M&M's
+-   [M&M CSV file](data/mms.csv)
+-   [M&M Excel file](data/mms.xlsx)
 
-[M&M CSV file](data/mms.csv) and also the [M&M Excel file](data/mms.xlsx)
+# Load Libraries
 
-## Load Libraries
-
-```{r, message=FALSE, warning=FALSE}
-# load the libraries each time you restart R
-library("readxl") # read in excel files
-library("skimr") # quick summary stats
-library("janitor") # clean up excel imports
-library("patchwork") # multipanel graphs
-library(skimr) # great way to do summary stats
-library("lubridate") # dates and times
-library("scales") # scales on ggplot ases
-library("tidyverse") # dplyr and piping and ggplot etc
-```
-
-##Read files
+Make sure you have installed these packages; if not, run `install.packages("packageName")` separately.
 
 ```{r}
-# Note you can read in excel files just as easy
-  mm.df <- read_excel("data/mms.xlsx")
-  
-  head(mm.df)
-
-
+library(tidyverse)  # Loads ggplot2, dplyr, and other tidyverse packages
+library(readxl)     # For reading Excel files
+library(skimr)      # For summary statistics (optional)
 ```
 
-# Summary Stats
+# Read in the Data
 
-Lets look at a few ways to get summary statistics The first is the simplist and uses base R
+We read the M&M dataset from an Excel file.
 
-```{r}
-summary(mm.df)
+``` r
+mm_df <- read_excel("data/mms.xlsx")
+head(mm_df)
 ```
 
-A better way is using Skimr
-
-```{r paged.print=FALSE}
-mm.df %>% 
-  skim()
+```{r, echo=FALSE}
+# This code runs but isn't shown in the rendered document.
+mm_df <- read_excel("data/mms.xlsx")
+head(mm_df)
 ```
 
-The cool part of skimr is that you can do groups
+# Summary Statistics
 
-```{r paged.print=FALSE}
-mm.df %>% 
-  group_by(center) %>% 
-  skim()
-```
+You can quickly inspect your data using base R or `skimr()`. For example, to calculate the mean diameter and mass by `center` and `color`, you can use:
 
-Finally you can get a summary manually but is a bit longer. These can also be saved into a new dataframe.
-
-```{r}
-mm.df %>% 
+``` r
+mm_summary <- mm_df %>% 
   group_by(center, color) %>% 
-  summarize(mean_diamter = mean(diameter, na.rm=TRUE),
-            mean_mass = mean(mass, na.rm=TRUE))
+  summarize(
+    mean_diameter = mean(diameter, na.rm = TRUE),
+    mean_mass = mean(mass, na.rm = TRUE)
+  )
+mm_summary
 ```
 
-# Graphing mean and SE
-
-These are all well and good but looking at a graph is cool.
-
-```{r}
-# now for the plot
-ggplot(mm.df, aes(color, diameter, color=color)) + 
-  stat_summary(fun = mean, na.rm = TRUE,
-               geom = "point",
-               size = 3) + 
-  stat_summary(fun.data = mean_se, na.rm = TRUE,
-               geom = "errorbar",
-               width = 0.2) +
-  labs(x = "color", y = "Diamter (units)") 
+```{r, echo=FALSE}
+# This code runs but isn't shown in the rendered document.
+mm_summary <- mm_df %>% 
+  group_by(center, color) %>% 
+  summarize(
+    mean_diameter = mean(diameter, na.rm = TRUE),
+    mean_mass = mean(mass, na.rm = TRUE)
+  )
+mm_summary
 ```
 
-We can also add in shape as a grouping varaible for the center of the m&m's
+# Plotting Mean and Standard Error with ggplot2
 
-```{r}
-# now for the plot
-ggplot(mm.df, aes(color, diameter, group=center, shape=center, color=color)) + 
-  stat_summary(fun = mean, na.rm = TRUE,
-               geom = "point",
-               size = 3) + 
-  stat_summary(fun.data = mean_se, na.rm = TRUE,
-               geom = "errorbar",
-               width = 0.2) +
-  labs(x = "color", y = "Diamter (units)") 
+We use `stat_summary()` to display the mean as a point and the standard error as error bars.
+
+## 1. Basic Mean and SE Plot
+
+This plot shows the mean diameter for each candy color with standard error error bars.
+
+``` r
+ggplot(mm_df, aes(x = color, y = diameter, color = color)) +
+  stat_summary(fun = mean, na.rm = TRUE, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.2) +
+  labs(
+    x = "Candy Color",
+    y = "Diameter (units)",
+    title = "Mean Diameter with Standard Error"
+  ) +
+  theme_minimal()
 ```
 
+```{r, echo=FALSE}
+ggplot(mm_df, aes(x = color, y = diameter, color = color)) +
+  stat_summary(fun = mean, na.rm = TRUE, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.3) +
+  labs(
+    x = "Candy Color",
+    y = "Diameter (units)",
+    title = "Mean Diameter with Standard Error"
+  ) +
+  theme_minimal()
 
-```{r}
-# now for the plot
-ggplot(mm.df, aes(color, diameter, group=center, shape=center, color=color)) + 
-  stat_summary(fun = mean, na.rm = TRUE,
-               geom = "point",
-               size = 3,
-               position= position_dodge(width = 0.2)) + 
-  stat_summary(fun.data = mean_se, na.rm = TRUE,
-               geom = "errorbar",
-               width = 0.2,
-               position= position_dodge(width = 0.2)) +
-  labs(x = "color", y = "Diamter (units)") 
 ```
 
+## 2. Adding Grouping by Center
+
+Here, we add a shape mapping to distinguish between different candy centers (e.g., plain, peanut, etc.).
+
+``` r
+ggplot(mm_df, aes(x = color, y = diameter, color = color, shape = center)) +
+  stat_summary(fun = mean, na.rm = TRUE, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.3) +
+  labs(
+    x = "Candy Color",
+    y = "Diameter (units)",
+    title = "Mean Diameter with SE Grouped by Center"
+  ) +
+  theme_minimal()
+```
+
+```{r, echo=FALSE}
+ggplot(mm_df, aes(x = color, y = diameter, color = color, shape = center)) +
+  stat_summary(fun = mean, na.rm = TRUE, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.3) +
+  labs(
+    x = "Candy Color",
+    y = "Diameter (units)",
+    title = "Mean Diameter with SE Grouped by Center"
+  ) +
+  theme_minimal()
+
+```
+
+## 3. Dodging for Better Separation
+
+When grouping by center, points and error bars may overlap. Use `position_dodge()` to separate them.
+
+``` r
+ggplot(mm_df, aes(x = color, y = diameter, color = color, shape = center)) +
+  stat_summary(
+    fun = mean, na.rm = TRUE, geom = "point", size = 3,
+    position = position_dodge(width = 0.3)
+  ) +
+  stat_summary(
+    fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.3,
+    position = position_dodge(width = 0.3)
+  ) +
+  labs(
+    x = "Candy Color",
+    y = "Diameter (units)",
+    title = "Mean Diameter with SE (Dodged by Center)"
+  ) +
+  theme_minimal()
+```
+
+```{r, echo=FALSE}
+ggplot(mm_df, aes(x = color, y = diameter, color = color, shape = center)) +
+  stat_summary(
+    fun = mean, na.rm = TRUE, geom = "point", size = 3,
+    position = position_dodge(width = 0.3)
+  ) +
+  stat_summary(
+    fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.3,
+    position = position_dodge(width = 0.3)
+  ) +
+  labs(
+    x = "Candy Color",
+    y = "Diameter (units)",
+    title = "Mean Diameter with SE (Dodged by Center)"
+  ) +
+  theme_minimal()
+
+```
+
+# Summary
+
+In this guide, you learned how to:
+
+-   Load and inspect data.
+
+-   Compute summary statistics.
+
+-   Create ggplot2 plots displaying the mean and standard error.
+
+-   Enhance plots by grouping and dodging to improve clarity.
+
+-   

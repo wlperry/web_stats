@@ -1,15 +1,18 @@
 ---
 title: "Example Data Files"
+description: "A list of example data files available in the data directory."
+format: html
 ---
 
-Here are the example dataframes -
+Below is a list of example data files available in the **data** directory:
 
-| Dataframe | CSV version              |     | XLSX version                |
-|-----------|--------------------------|-----|-----------------------------|
-| M&M data  | [m&m csv](/data/mms.csv) |     | [m&m excel](/data/mms.xlsx) |
-|           |                          |     |                             |
-|           |                          |     |                             |
-|           |                          |     |                             |
-|           |                          |     |                             |
-|           |                          |     |                             |
-|           |                          |     |                             |
+| Dataframe             | CSV version                                     | XLSX version                                      |
+|-----------------------|-------------------------------------------------|---------------------------------------------------|
+| Beetle Data           | [beetle.csv](/data/beetle.csv)                    | [beetle.xlsx](/data/beetle.xlsx)                    |
+| Gene Data             | [gene_data.csv](/data/gene_data.csv)              | —                                                 |
+| Iris Data             | [iris.csv](/data/iris.csv)                        | [iris_excel.xlsx](/data/iris_excel.xlsx)            |
+| Mendota Temperature   | [mendota_temp.csv](/data/mendota_temp.csv)        | —                                                 |
+| M&M Data              | [mms.csv](/data/mms.csv)                          | [mms.xlsx](/data/mms.xlsx)                          |
+| Standards             | [standards.csv](/data/standards.csv)              | —                                                 |
+| Toolik Profile        | [toolik_profile.csv](/data/toolik_profile.csv)    | —                                                 |
+| Vermillion Danville   | [vermillion_danville.csv](/data/vermillion_danville.csv) | —                                           |

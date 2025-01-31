@@ -1,0 +1,35 @@
+{
+  "index.qmd": {
+    "index.html": "236657d0"
+  },
+  "01_resources.qmd": {
+    "01_resources.html": "0ba5c555"
+  },
+  "web_stats.qmd": {
+    "web_stats.html": "10863cdf"
+  },
+  "about.qmd": {
+    "about.html": "713a2dde"
+  },
+  "02_installing_r.qmd": {
+    "02_installing_r.html": "76e48439"
+  },
+  "03_installing_libraries.qmd": {
+    "03_installing_libraries.html": "8c134f8c"
+  },
+  "04_project_setup.qmd": {
+    "04_project_setup.html": "560c271d"
+  },
+  "05_reading_files.qmd": {
+    "05_reading_files.html": "cb576797"
+  },
+  "07_customize_ggplots.qmd": {
+    "07_customize_ggplots.html": "f0f2a431"
+  },
+  "08_ggplot_summary_plots.qmd": {
+    "08_ggplot_summary_plots.html": "bb30c0b5"
+  },
+  "99_example_data_files.qmd": {
+    "99_example_data_files.html": "5ca7bc9a"
+  }
+}

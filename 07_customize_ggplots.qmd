@@ -1,167 +1,216 @@
 ---
-title: "GGPlot customizing plots"
+title: "ggplot2: Customizing Plots"
+description: "Learn how to customize ggplot2 graphs by mapping aesthetics, adjusting positions, setting manual colors, and facetting."
+format:
+  html:
+    toc: true
+    toc-depth: 2
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 # Objective
 
-## How to How to customize ggplot graphs
+This guide demonstrates how to customize ggplot2 graphs. You will learn
+to: - Map additional aesthetics (color, shape) to your data. - Adjust
+point positions using jittering and dodging. - Manually assign colors
+with `scale_color_manual`. - Facet your graphs using `facet_wrap()` and
+`facet_grid()`.
 
-We will work on basic customization and then go to creating themes and also storing them in separate files. TO BE UPDATED SOON.
+# Data for the Exercise
 
-## Data for the exercise
+We will use a sample M&M dataset. For more sample data files, see the
+[Data Files page](99_example_data_files.qmd).
 
-[This page has a link to all of the data files](99_example_data_files.qmd)
+-   [M&M CSV file](/data/mms.csv)
+-   [M&M Excel file](/data/mms.xlsx)
 
-We will use a mock data file that uses M&M's
+# Load Libraries
 
-[M&M CSV file](/data/mms.csv) and also the [M&M Excel file](/data/mms.xlsx)
+Make sure you have installed these packages. If not, run the
+`install.packages()` commands separately.
 
-## Load Libraries
+``` r
+# Uncomment the following lines
+if you need to install these packages: 
+# install.packages("tidyverse")     
+# install.packages("readxl")    
+# install.packages("skimr")     
+# install.packages("janitor")    
+# install.packages("patchwork")   
+# install.packages("lubridate")    
+# install.packages("scales")   
 
-```{r, message=FALSE, warning=FALSE}
-
-# this is also helpful with further customization 
-# it appears in your toolbar under Addins - you install the package and run the library one time.
-# install.packages(ggThemeAssist)
-# library(ggThemeAssist)
-
-# load the libraries each time you restart R
-library("readxl") # read in excel files
-library("skimr") # quick summary stats
-library("janitor") # clean up excel imports
-library("patchwork") # multipanel graphs
-library("lubridate") # dates and times
-library("scales") # scales on ggplot ases
-library("tidyverse") # dplyr and piping and ggplot etc
+library(tidyverse)    # Includes ggplot2 and dplyr 
+library(readxl)       # For reading Excel files 
+library(skimr)        # For quick summary stats
+library(janitor)      # For cleaning data 
+library(patchwork)    # For combining plots 
+library(lubridate)    # For handling dates and times
+library(scales)       # For formatting scales in plots
 ```
 
-## Read in the file
+------------------------------------------------------------------------
 
-#### Read in excel files
+# Read in the Data
 
-Note that you can read in excel files in the same way.
+Read the M&M dataset from an Excel file.
 
-```{r}
-# Note you can read in excel files just as easy
-  mm.df <- read_excel("data/mms.xlsx")
-  
- # head(mm.df)
+``` r
+mm_df <- read_excel("data/mms.xlsx")
+head(mm_df)  # View the first few rows of the data
 ```
 
-### The XY plot
+# Basic ggplot2 Customization
 
-Again, this was done in the prior script and here it is simplified as I do in most ggplot commands. Note there is no `data =` or `x =` or `y =`.
+## 1. Creating a Simple XY Plot
 
-```{r}
-ggplot(data=mm.df, aes(color, mass)) + # sometimes necessary is , group = group
+Start with a basic scatter plot of `color` versus `mass`. The `aes()`
+function maps your variables to the x and y axes.
+
+``` r
+
+ggplot(mm_df, aes(color, mass)) +
   geom_point()
 ```
 
-## Change color
+## 2. Mapping Additional Aesthetics
 
-You can use the **`aes(x, y, mapping)`** mappings statement to map a color, fill, shape, linesytyle, line type, size, or grouping to the data. If we add color to this aes statment it will color each of the m&m colors to a different default color.
+You can also map aesthetics like color and shape to your data. In the
+example below:
 
-```{r}
-# Mapping a color to data groups ----
-# If you add ", color=group" inside of the aes statement it will map a color to
-# each group and it is sometimes necessary to add ", group = group"
-ggplot(mm.df, aes(color, mass, color=color)) + 
+-   `color = color` maps the candy color to the point color.
+
+-   `shape = center` maps the candy center type to the point shape.
+
+``` r
+
+ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_point()
 ```
 
-### Adding the shape of the center of the m&m
+## 3. Adjusting Point Positions
 
-We know shape is in there so we should add that to the aes statement. It will map shape to the center of the m&m. Because this is a mappign to a different set of data it will add in a differnet legend for that mapping.
+To reduce point overlap, you can adjust positions using:
 
-```{r}
-ggplot(mm.df, aes(color, mass, color=color, shape = center)) + 
-  geom_point()
+-   **Jitter:** Adds random noise to points.
+
+-   **Dodge:** Offsets points based on a grouping variable.
+
+-   **Jitter-Dodge:** Combines both techniques.
+
+### Example: Jittering Points
+
+``` r
+ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
+  geom_point(position = position_jitter(width = 0.4))
 ```
 
-## Dodging points
+## 4. Customizing Colors
 
-Now lets reduce the overlap of the points. There are a lot of ways to do this. The first way will reduce overlap of all day with no respect to the what grouping it is. We can add this statement into the `geom_point(**here**)` statement.
+### Method 1: Manual Color Assignment (Order-Dependent)
 
-```         
-position= position_jitter(width = 0.4)
-```
+This method sets a palette by order. (Be cautious if the order of factor
+levels changes.)
 
-We could also dodge the points based on the grouping of shape
-
-```         
-position= position_dodge(width = 0.4)
-```
-
-This results in sets of data that are dodged by shape but still overlap. Finally we could try dodging and jittering the data to get the full effect
-
-```         
-position= position_jitterdodge(jitter.width = 0.4, dodge.width = 0.9)
-```
-
-```{r}
-ggplot(mm.df, aes(color, mass, color=color, shape = center)) + 
-  geom_point(position= position_jitter(width = 0.4))
-```
-
-## Color Points with specific colors
-
-You can do this two ways. Below is the first way and I find this to work but is dangerous as if you mix up the order it will recolor points. Note that this was done below with blue and brown.
-
-```{r}
-ggplot(mm.df, aes(color, mass, color=color, shape = center)) + 
+``` r
+ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_boxplot() +
-  geom_point(position= position_jitterdodge(jitter.width = 0.4)) +
+  geom_point(position = position_jitterdodge(jitter.width = 0.4)) +
   labs(x = "Color", y = "Mass") +
-  scale_color_manual(name = "Color", 
-                     values = c("brown", "blue", "green", "orange", "red", "yellow"),
-                     labels = c("Blue", "Brown", "Green", "Orange", "Red", "Yellow"))
+  scale_color_manual(
+    name = "Color",
+    values = c("brown", "blue", "green", "orange", "red", "yellow"),
+    labels = c("Blue", "Brown", "Green", "Orange", "Red", "Yellow")
+  )
 ```
 
-## Recoloring points using a 1:1 relationship - safer.
+### Method 2: Safer Manual Color Assignment (1:1 Mapping)
 
-This may help limit errors when assigning colors or shapes or fills to a value. Here you put in a values statement and in there you have the name of the variable in quotes and then the value you want to assing to it.
+This method explicitly assigns colors to each factor level.
 
-```{r}
-ggplot(mm.df, aes(color, mass, color=color, shape = center)) + 
+``` r
+ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_boxplot() +
-  geom_point(position= position_jitterdodge(jitter.width = 0.4)) +
+  geom_point(position = position_jitterdodge(jitter.width = 0.4)) +
   labs(x = "Color", y = "Mass") +
-  scale_color_manual(name="Color",
-                     values=c(  "blue"="blue", 
-                                "brown"="brown", 
-                                "green"="green", 
-                                "orange"= "orange", 
-                                "red"="red", 
-                                "yellow"="yellow"))
+  scale_color_manual(
+    name = "Color",
+    values = c(
+      "blue" = "blue",
+      "brown" = "brown",
+      "green" = "green",
+      "orange" = "orange",
+      "red" = "red",
+      "yellow" = "yellow"
+    ),
+    labels = c(
+      "blue" = "Cool Blue",
+      "brown" = "Earth Brown",
+      "green" = "Leaf Green",
+      "orange" = "Bright Orange",
+      "red" = "Vivid Red",
+      "yellow" = "Sunny Yellow"
+    )
+  )
 ```
 
-# Facetting graphs
+## 5. Customizing shapes of points
 
-If we want to break up this graph into separate panels we can do this with Patchwork by adding in a `facet_grid() or facet_wrap()` statement. These do different things. The grid lays it out in a grid of rows and columns and the wrap wraps the graphs from left to right to new rows. you should try both. The value in the parenthes is the parameter you want to wrap by using facet wrap. In facet grid it is row\~column to wrap by two variables and it could be .\~column or row\~. to do grids with only on varaible.
+### Method 1: Manual shape Assignment (Order-Dependent)
 
-```{r}
-ggplot(mm.df, aes(color, mass, color=color, shape = center)) + 
+This method sets a shape by order. (Be cautious if the order of factor
+levels changes.)
+
+``` r
+ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_boxplot() +
-  geom_point(position= position_jitterdodge(jitter.width = 0.4)) +
-  labs(x = "color", y = "Mass") +
-  scale_color_manual(name = "Color", 
-                     values = c("blue", "brown", "green", "orange", "red", "yellow"),
-                     labels = c("Blue", "Brown", "Green", "Orange", "Red", "Yellow"))+
-  facet_wrap(~center)
-
+  geom_point(position = position_jitterdodge(jitter.width = 0.4)) +
+  labs(x = "Color", y = "Mass") +
+  scale_shape_manual(
+    name = "Center",
+    values = c(16, 17, 18, 15, 3, 8),  # shape codes assigned in order
+    labels = c("Solid Circle", "Triangle", "Diamond", "Square", "Plus", "Star")
+  )
 ```
 
-```{r}
-# Facet_grid -----
-# lets you make a grid of one or two variables in a grid
+### Method 2: Safer Manual Shape Assignment (1:1 Mapping)
 
-ggplot(mm.df, aes(color, mass, color=color, shape = center)) + 
+This method explicitly maps each factor level (using its name) to a
+specific shape code. This approach is more robust if the order of the
+factor levels changes.
+
+``` r
+ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_boxplot() +
-  geom_point(position= position_jitterdodge(jitter.width = 0.4)) +
-  labs(x = "color", y = "Mass") +
-  scale_color_manual(name = "Color", 
-                     values = c("blue", "brown", "green", "orange", "red", "yellow"),
-                     labels = c("Blue", "Brown", "Green", "Orange", "Red", "Yellow"))+
-  facet_grid(center~., scales="free_y") # or free_x or free
-
+  geom_point(position = position_jitterdodge(jitter.width = 0.4)) +
+  labs(x = "Color", y = "Mass") +
+  scale_shape_manual(
+    name = "Center",
+    values = c(
+      "plain"  = 16,  # e.g., plain center mapped to a solid circle
+      "peanut" = 17,  # peanut center mapped to a triangle
+      "crispy" = 18,  # crispy center mapped to a diamond
+      "wafer"  = 15,  # wafer center mapped to a square
+      "malted" = 3,   # malted center mapped to a plus
+      "other"  = 8    # other center mapped to a star
+    ),
+    labels = c(
+      "plain"  = "Plain Center",
+      "peanut" = "Peanut Center",
+      "crispy" = "Crispy Center",
+      "wafer"  = "Wafer Center",
+      "malted" = "Malted Center",
+      "other"  = "Other Center"
+    )
+  )
 ```
+
+**Key Points:**
+
+-   **1:1 Mapping:** Each factor level in `center` is explicitly mapped
+    to a specific shape code.
+
+-   **Custom Labels:** The `labels` argument lets you customize the
+    legend text for clarity.\

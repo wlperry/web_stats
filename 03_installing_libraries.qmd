@@ -1,30 +1,38 @@
 ---
-title: "Installing libraries"
+title: "Installing Libraries"
+description: "A simple guide for first-time R users on installing and loading essential libraries."
+format:
+  html:
+    toc: true
+    toc-depth: 2
 ---
 
-## Packages / Libraries
+# Installing Libraries
 
-Libraries are sets of code that are stored either individually or as groups in packages that when installed add a lot of functionality to R. The tidyverse package for instance has a lot of libraries in it that make using R a lot easier for beginners and advanced users. Tidyverse builds on base R to make the syntax similar across many of the tasks you will want to do.
+Libraries (or packages) are collections of R functions and data that extend R’s capabilities. In this guide, you’ll learn how to install and load some essential libraries to help you get started.
 
-### These are in my mind the essential libraries for R that I use all the time
+------------------------------------------------------------------------
 
-You will install these one time and then you need to load the libraries each time you use R and I usually have them loaded at the top of each script. Below is how to install libraries
+## Installing Essential Libraries
+
+To add new functionality to R, you first need to install the libraries. Run the following commands in your R console:
 
 ``` r
-install.packages("devtools") # install new things from developmental sources
-install.packages("tidyverse") # dplyr and piping and ggplot etc
-install.packages("lubridate") # dates and times
-install.packages("readxl") # read in excel files
-install.packages("janitor") # clean up excel imports
-install.packages("patchwork") # arrange multiple plots per page
-install.packages("skimr") # quick summary stats
-install.packages("plotly") # cool ggplot things
-install.packages("scales") # scales on ggplot axes
+install.packages("devtools")    # Tools for package development
+install.packages("tidyverse")     # A suite of packages for data manipulation and visualization
+install.packages("lubridate")     # Simplifies working with dates and times
+install.packages("readxl")        # Reads Excel files
+install.packages("janitor")       # Cleans up data imports
+install.packages("patchwork")     # Combines multiple plots
+install.packages("skimr")         # Provides quick summary statistics
+install.packages("plotly")        # Enhances ggplot2 with interactivity
+install.packages("scales")        # Helps with ggplot2 axis scaling```
+
 ```
 
 ### Load Libraries in scripts
 
-This is how to load the libraries at the start of each script.
+After installation, load the libraries at the beginning of all of your R scripts using:
 
 ``` r
 library(tidyverse) 
@@ -36,53 +44,44 @@ library(janitor)
 library(patchwork)
 ```
 
-### These are libraries that are SUPER useful that you want to install and then only need to load the libraries one time and it will add a link to your addins drop down menu in RStudio.
+## Optional: Useful Add-in Libraries
+
+Some libraries add helpful tools to RStudio’s Addins menu (but not Positron), making it easier to reformat your code. Install these once and then load them as needed:
 
 ``` r
-install.packages("ggThemeAssist") # helps reformat code - only run library one time
-install.packages("styler") # allows you to reformat code to look like a pro!!
+install.packages("ggThemeAssist")  # Assists with reformatting code
 
-library(ggThemeAssist)
-library(styler) 
+install.packages("styler")         # Automatically styles your code
 ```
 
-You may need to go to the View in the menu and click show toolbar to see this
+And load them with:
+
+``` r
+library(ggThemeAssist)
+library(styler)
+```
+
+In RStudio, you might need to enable the add-ins toolbar. Simply go to **View \> Show Toolbar** to access them.
 
 ![Addins menu](/images/addins.png){fig-alt="Addins_menu" fig-align="center" width="250"}
 
 ### These libraries are useful for general statistics and used quite often.
 
-These are some of the better vetted statistical packages in my opinioon
+These are some of the better vetted statistical packages in my opinion for Anova and Linear Models
 
 ``` r
-
 install.packages("car") # stats and ANOVA - essential 
 install.packages("emmeans") # estimated marginal means for unbalanced designs 
+
+# these only have to be installed and not run...
 install.packages("multcomView") # paired comparisons - note this will interfear with DPLYR!!
 install.packages("Rmisc") # stats 
 install.packages("Hmisc") # stats install.packages("broom") # output models cleanly 
 ```
 
-### These are specialized libraries for specialized statistics
+And load them with:
 
 ``` r
-install.packages("GGally") # special ggplot graphs} 
-install.packages("corrplot") # correlation plot matricies 
-install.packages("survminer") # survival analysis  
-install.packages("survival") # survival analysis  
-install.packages("pwr") # power analysis  
-install.packages("vegan") # PCA and other sorts of multidimensional  
-install.packages("factoextra") # more PCA# mixed models  
-install.packages("lmerTest") # mixed model Anovas  install.packages("blme") # Bayesian mixed model Anovas
-```
-
-### Finally here are some lesser used packages that I do not use a lot but you might find useful
-
-``` r
-install.packages("hms") # useful for time series    
-install.packages("akima") # imputing new values         
-install.packages("RMySQL") # access MySQLserver     
-install.packages("rLakeAnalyzer") # used for the lake analyzer scripts 
-install.packages("LakeMetabolizer") #
-install.packages("colorRamps") # adds cool color templates
+library(car)
+library(emmeans)
 ```
