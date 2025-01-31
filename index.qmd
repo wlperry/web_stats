@@ -7,10 +7,6 @@ format:
     toc-depth: 2
 ---
 
-<!-- Optional: Centered Tidyverse hex sticker -->
-
-<!-- Optional: Centered R logo -->
-
 ::: {style="text-align: center;"}
 <img src="https://www.r-project.org/logo/Rlogo.png" alt="R Logo" width="100"/>
 :::
