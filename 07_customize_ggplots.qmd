@@ -31,9 +31,9 @@ We will use a sample M&M dataset. For more sample data files, see the
 Make sure you have installed these packages. If not, run the
 `install.packages()` commands separately.
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Uncomment the following lines
-if you need to install these packages: 
+# if you need to install these packages: 
 # install.packages("tidyverse")     
 # install.packages("readxl")    
 # install.packages("skimr")     
@@ -57,7 +57,7 @@ library(scales)       # For formatting scales in plots
 
 Read the M&M dataset from an Excel file.
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 mm_df <- read_excel("data/mms.xlsx")
 head(mm_df)  # View the first few rows of the data
 ```
@@ -69,7 +69,7 @@ head(mm_df)  # View the first few rows of the data
 Start with a basic scatter plot of `color` versus `mass`. The `aes()`
 function maps your variables to the x and y axes.
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 
 ggplot(mm_df, aes(color, mass)) +
   geom_point()
@@ -84,7 +84,7 @@ example below:
 
 -   `shape = center` maps the candy center type to the point shape.
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 
 ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_point()
@@ -102,7 +102,7 @@ To reduce point overlap, you can adjust positions using:
 
 ### Example: Jittering Points
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_point(position = position_jitter(width = 0.4))
 ```
@@ -114,7 +114,7 @@ ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
 This method sets a palette by order. (Be cautious if the order of factor
 levels changes.)
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_boxplot() +
   geom_point(position = position_jitterdodge(jitter.width = 0.4)) +
@@ -130,7 +130,7 @@ ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
 
 This method explicitly assigns colors to each factor level.
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_boxplot() +
   geom_point(position = position_jitterdodge(jitter.width = 0.4)) +
@@ -163,7 +163,7 @@ ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
 This method sets a shape by order. (Be cautious if the order of factor
 levels changes.)
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_boxplot() +
   geom_point(position = position_jitterdodge(jitter.width = 0.4)) +
@@ -181,7 +181,7 @@ This method explicitly maps each factor level (using its name) to a
 specific shape code. This approach is more robust if the order of the
 factor levels changes.
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
   geom_boxplot() +
   geom_point(position = position_jitterdodge(jitter.width = 0.4)) +
@@ -213,4 +213,4 @@ ggplot(mm_df, aes(color, mass, color = color, shape = center)) +
     to a specific shape code.
 
 -   **Custom Labels:** The `labels` argument lets you customize the
-    legend text for clarity.\
+    legend text for clarity.

@@ -1,48 +1,91 @@
 /* styles.css */
 
-/* Base styling for better readability */
+/* -------------------------- */
+/* Base styling for the body  */
+/* -------------------------- */
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  line-height: 1.6;
-  background-color: #f8f9fa;
-  color: #343a40;
-  margin: 0;
-  padding: 1rem;
+  background-color: #FFFFFF;  /* Light grey background for overall readability */
+  color: #343a40;             /* Dark grey text for body content */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;  /* Preferred fonts with fallbacks */
+  line-height: 1.6;           /* Improve text readability with adequate line spacing */
+  margin: 0;                  /* Remove default browser margins */
+  padding: 1rem;              /* Add padding around the main content */
 }
 
-/* Style for headers */
+/* ------------------------- */
+/* Header styling            */
+/* ------------------------- */
+header {
+  background-color: #FFFFFF;  /* Set header background to purple */
+  color: #343a40;             /* Set header text to purple (Note: same as background; consider adjusting for contrast) */
+  padding: 1rem;              /* Add space inside the header */
+}
+
+
+/* Header links styling */
+header a {
+  color: #F4CD54;             /* Use purple for links within the header */
+}
+
+header a:hover {
+  color: #FFFF09;             /* Change link color on hover for better visual feedback */
+}
+
+/* ------------------------- */
+/* Heading elements styling  */
+/* ------------------------- */
 h1, h2, h3 {
-  color: #212529;
-  margin-top: 1.5rem;
+  color: #212529;             /* Use a dark grey for headings */
+  margin-top: 1.5rem;         /* Add space above headings */
 }
 
-/* Links */
+/* ------------------------- */
+/* General link styling      */
+/* ------------------------- */
 a {
-  color: #007bff;
-  text-decoration: none;
+  color: #007bff;             /* Default blue color for links */
+  text-decoration: none;      /* Remove underlines from links */
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration: underline; /* Underline links on hover for clarity */
 }
 
-/* Image responsiveness */
+/* ------------------------- */
+/* Image responsiveness      */
+/* ------------------------- */
 img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 5px;
+  max-width: 100%;            /* Ensure images scale within their container */
+  height: auto;               /* Maintain the image's aspect ratio */
+  border-radius: 5px;         /* Slightly round the corners of images */
 }
 
-/* Navigation bar adjustments (if needed) */
+/* ------------------------- */
+/* Navigation bar (navbar)   */
+/* ------------------------- */
 .navbar {
-  margin-bottom: 2rem;
+  background-color: #70131d;  /* Set navbar background to purple */
+  color: #F4CD54;             /* Set navbar text to purple (Note: same as background; may need adjustment for readability) */
+  padding: 1rem;              /* Add padding within the navbar */
 }
 
-/* Footer styling (if you add one) */
+/* Navbar links styling */
+.navbar a {
+  color: #F4CD54;             /* Set links inside navbar to purple */
+  text-decoration: none;      /* Remove underlines from navbar links */
+}
+
+.navbar a:hover {
+  color: #FFFF09;             /* Use a lighter color on hover for navbar links */
+}
+
+/* ------------------------- */
+/* Footer styling            */
+/* ------------------------- */
 footer {
-  text-align: center;
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: #343a40;
-  color: white;
+  text-align: center;         /* Center-align footer text */
+  margin-top: 2rem;           /* Add space above the footer */
+  padding: 1rem;              /* Add padding inside the footer */
+  background-color: #343a40;  /* Dark grey background for the footer */
+  color: white;               /* White text for better contrast in the footer */
 }

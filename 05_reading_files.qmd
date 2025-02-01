@@ -24,7 +24,7 @@ For more sample data files, see the [Dataframes page](99_example_data_files.qmd)
 
 We'll use `tidyverse` for CSV and delimited files, and `readxl` for Excel files.
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Load necessary libraries
 library(janitor)
 library(readxl)
@@ -32,37 +32,40 @@ library(tidyverse)
 ```
 
 # Reading Data Files
-1. CSV Files
 
-``` r
+1.  CSV Files
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Read a CSV file
 mm_df <- read_csv("data/mms.csv")
 ```
 
-2. Excel Files
-``` r
+2.  Excel Files
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Read an Excel file
 mm_excel_df <- read_excel("data/mms.xlsx")
 ```
 
-3. Tab-Delimited Files
+3.  Tab-Delimited Files
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Read a tab-delimited file (alternatively, use read_tsv)
 mm_tab_df <- read_delim("data/mms_tab.txt", delim = "\t")
 ```
 
-4. Space-Delimited Files
+4.  Space-Delimited Files
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Read a space-delimited file
 mm_space_df <- read_delim("data/mms_space.txt", delim = " ")
 ```
 
 # Inspecting the Data
+
 After reading in a file, check its structure using:
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Quickly inspect the data
 glimpse(mm_df)
 # or 
@@ -70,9 +73,10 @@ head(mm_df)
 ```
 
 # Saving Processed Data
+
 Before saving your results, ensure the output directory exists. You can create it if needed:
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Create the output directory if it doesn't exist
 if (!dir.exists("output")) {
   dir.create("output")
@@ -81,7 +85,7 @@ if (!dir.exists("output")) {
 
 Then, save your data frame as a CSV file:
 
-``` r 
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Save the processed data to the output directory
 write_csv(mm_df, "output/mm_output.csv")
 ```
@@ -90,7 +94,7 @@ write_csv(mm_df, "output/mm_output.csv")
 
 To do this we will use janitor that has a lot of functions that automate this task.
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # Read an Excel file
 mm_excel_df <- read_excel("data/mms.xlsx") %>%    
               clean_names()       

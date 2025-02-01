@@ -22,7 +22,7 @@ We use a sample M&M dataset. For more sample data files, check out the [Data Fil
 
 Make sure you have installed these packages; if not, run `install.packages("packageName")` separately.
 
-```{r}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 library(tidyverse)  # Loads ggplot2, dplyr, and other tidyverse packages
 library(readxl)     # For reading Excel files
 library(skimr)      # For summary statistics (optional)
@@ -32,12 +32,7 @@ library(skimr)      # For summary statistics (optional)
 
 We read the M&M dataset from an Excel file.
 
-``` r
-mm_df <- read_excel("data/mms.xlsx")
-head(mm_df)
-```
-
-```{r, echo=FALSE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 # This code runs but isn't shown in the rendered document.
 mm_df <- read_excel("data/mms.xlsx")
 head(mm_df)
@@ -47,7 +42,7 @@ head(mm_df)
 
 You can quickly inspect your data using base R or `skimr()`. For example, to calculate the mean diameter and mass by `center` and `color`, you can use:
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 mm_summary <- mm_df %>% 
   group_by(center, color) %>% 
   summarize(
@@ -57,16 +52,6 @@ mm_summary <- mm_df %>%
 mm_summary
 ```
 
-```{r, echo=FALSE}
-# This code runs but isn't shown in the rendered document.
-mm_summary <- mm_df %>% 
-  group_by(center, color) %>% 
-  summarize(
-    mean_diameter = mean(diameter, na.rm = TRUE),
-    mean_mass = mean(mass, na.rm = TRUE)
-  )
-mm_summary
-```
 
 # Plotting Mean and Standard Error with ggplot2
 
@@ -76,7 +61,7 @@ We use `stat_summary()` to display the mean as a point and the standard error as
 
 This plot shows the mean diameter for each candy color with standard error error bars.
 
-``` r
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 ggplot(mm_df, aes(x = color, y = diameter, color = color)) +
   stat_summary(fun = mean, na.rm = TRUE, geom = "point", size = 3) +
   stat_summary(fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.2) +
@@ -88,36 +73,13 @@ ggplot(mm_df, aes(x = color, y = diameter, color = color)) +
   theme_minimal()
 ```
 
-```{r, echo=FALSE}
-ggplot(mm_df, aes(x = color, y = diameter, color = color)) +
-  stat_summary(fun = mean, na.rm = TRUE, geom = "point", size = 3) +
-  stat_summary(fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.3) +
-  labs(
-    x = "Candy Color",
-    y = "Diameter (units)",
-    title = "Mean Diameter with Standard Error"
-  ) +
-  theme_minimal()
-
-```
 
 ## 2. Adding Grouping by Center
 
 Here, we add a shape mapping to distinguish between different candy centers (e.g., plain, peanut, etc.).
 
-``` r
-ggplot(mm_df, aes(x = color, y = diameter, color = color, shape = center)) +
-  stat_summary(fun = mean, na.rm = TRUE, geom = "point", size = 3) +
-  stat_summary(fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.3) +
-  labs(
-    x = "Candy Color",
-    y = "Diameter (units)",
-    title = "Mean Diameter with SE Grouped by Center"
-  ) +
-  theme_minimal()
-```
 
-```{r, echo=FALSE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 ggplot(mm_df, aes(x = color, y = diameter, color = color, shape = center)) +
   stat_summary(fun = mean, na.rm = TRUE, geom = "point", size = 3) +
   stat_summary(fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.3) +
@@ -134,25 +96,9 @@ ggplot(mm_df, aes(x = color, y = diameter, color = color, shape = center)) +
 
 When grouping by center, points and error bars may overlap. Use `position_dodge()` to separate them.
 
-``` r
-ggplot(mm_df, aes(x = color, y = diameter, color = color, shape = center)) +
-  stat_summary(
-    fun = mean, na.rm = TRUE, geom = "point", size = 3,
-    position = position_dodge(width = 0.3)
-  ) +
-  stat_summary(
-    fun.data = mean_se, na.rm = TRUE, geom = "errorbar", width = 0.3,
-    position = position_dodge(width = 0.3)
-  ) +
-  labs(
-    x = "Candy Color",
-    y = "Diameter (units)",
-    title = "Mean Diameter with SE (Dodged by Center)"
-  ) +
-  theme_minimal()
-```
 
-```{r, echo=FALSE}
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
 ggplot(mm_df, aes(x = color, y = diameter, color = color, shape = center)) +
   stat_summary(
     fun = mean, na.rm = TRUE, geom = "point", size = 3,

@@ -27,7 +27,6 @@ install.packages("patchwork")     # Combines multiple plots
 install.packages("skimr")         # Provides quick summary statistics
 install.packages("plotly")        # Enhances ggplot2 with interactivity
 install.packages("scales")        # Helps with ggplot2 axis scaling```
-
 ```
 
 ### Load Libraries in scripts
