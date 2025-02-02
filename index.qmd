@@ -57,7 +57,7 @@ For a complete list of example data files, please see the [Example Data Files pa
 
 [Using patchwork for multiple plots](09_ggplot_multiple_plots_patchwork.qmd)
 
-### Select and filter to change datframes
+### Select and filter to change dataframes
 
 [How to select columns and filter rows](10_manipulating_select_filter.qmd)
 
