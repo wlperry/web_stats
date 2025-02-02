@@ -1,0 +1,168 @@
+---
+title: "ggplot2 and patchwork - multiple panes"
+description: "Learn how to plot multiple plots on a page."
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Objective
+
+The goal of this slide set is to show you how to make publication ready graphs and expand on what we have done in the basic plotting series. The goal of this is to use GGPlot and later on I will show you how to use patchwork which allows more flexibility in plot layout.    
+
+
+# Data for the Exercise
+
+We use a sample M&M dataset. For more sample data files, check out the [Data Files page](99_example_data_files.qmd).
+
+-   [M&M CSV file](data/mms.csv)
+-   [M&M Excel file](data/mms.xlsx)
+
+# Load Libraries
+
+Make sure you have installed these packages; if not, run `install.packages("packageName")` separately.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+
+# Load Libraries ----
+# this is done each time you run a script
+library(scales)
+library(readxl) # read in excel files
+library(janitor) # clean up excel imports
+library(patchwork) # multipanel graphs
+library(tidyverse) # dplyr and piping and ggplot etc
+```
+
+So now we have seen how to look at the data    
+What if we wanted to modify the data in terms of columns or rows    
+     
+Making graphs this way can get a bit cumbersome as you might imagine.     
+This is because the data is in what we call wide format     
+The long format is the format often used for Anovas and other stats      
+We will go over how to do this later but for now lets just look at the file     
+
+# Read in the Data
+
+We read the lakes data for this one.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# This code runs but isn't shown in the rendered document.
+lakes.df <- read_csv("data/reduced_lake_long_genus_species.csv")
+head(lakes.df)
+```
+# Patchwork graphing-----
+# https://github.com/thomasp85/patchwork
+# we can have a lot more control over our plots if we want
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# plot of Willis Lake ------
+willis.plot <- lakes.df %>%
+  filter(lake_name=="Willis" & str_detect(genus_species, "Daphnia")) %>% 
+  ggplot(aes(date, org_l, color=genus_species)) + # sometimes necessary is , group = group
+  geom_point()+
+  geom_line() +
+  labs(x = "Date", y = expression(bold("Animals (No. L"^-1*")"))) +
+  scale_x_date(date_breaks = "6 month",
+               limits = as_date(c('1994-06-01', '2006-12-31')),
+               labels=date_format("%Y-%m-%d"), expand=c(0,0))  +
+  theme(axis.text.x = element_text(size=12, face="bold", angle=45, hjust=1)) 
+willis.plot
+```
+
+## Plot Grass Lake
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+grass.plot <- lakes.df %>%
+  filter(lake_name=="Grass" & str_detect(genus_species, "Daphnia")) %>% 
+  ggplot(aes(date, org_l, color=genus_species)) + # sometimes necessary is , group = group
+  geom_point()+
+  geom_line() +
+  labs(x = "Date", y = expression(bold("Animals (No. L"^-1*")"))) +
+  scale_x_date(date_breaks = "6 month",
+               limits = as_date(c('1994-06-01', '2006-12-31')),
+               labels=date_format("%Y-%m-%d"), expand=c(0,0))  +
+  theme(axis.text.x = element_text(size=12, face="bold", angle=45, hjust=1)) 
+grass.plot
+```
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# plot of Indian Lake ------
+indian.plot <- lakes.df %>%
+  filter(lake_name=="Indian" & str_detect(genus_species, "Daphnia")) %>% 
+  ggplot(aes(date, org_l, color=genus_species)) + # sometimes necessary is , group = group
+  geom_point()+
+  geom_line() +
+  labs(x = "Date", y = expression(bold("Animals (No. L"^-1*")"))) +
+  scale_x_date(date_breaks = "6 month",
+               limits = as_date(c('1994-06-01', '2006-12-31')),
+               labels=date_format("%Y-%m-%d"), expand=c(0,0))  +
+  theme(axis.text.x = element_text(size=12, face="bold", angle=45, hjust=1)) 
+indian.plot
+
+```
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# Now we can use patchwork to combine files
+# Lets look at the plots in one format
+grass.plot +
+willis.plot +
+indian.plot +
+plot_layout(ncol = 1)
+
+```
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+
+# here is another format
+grass.plot +
+willis.plot +
+indian.plot +
+plot_layout(ncol = 1,
+              heights=c(4,2,1))
+```
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# you might want to turn off legends and axes
+# you can do this in the theme statements
+grass.plot + theme(axis.title.x=element_blank(), axis.text.x=element_blank(),
+                   legend.position = "none") + 
+willis.plot + theme(axis.title.x=element_blank(), axis.text.x=element_blank(),
+                    legend.position = "none") +
+indian.plot + theme(axis.title.x=element_blank(), axis.text.x=element_blank(),
+                    legend.position = "bottom") +
+plot_layout(ncol = 1,
+            heights=c(4,2,1))
+
+```
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# the plots can get as fancy as you would like
+
+grass.plot +  theme(legend.position = "bottom") + {
+  willis.plot + theme(axis.title.x=element_blank(), axis.text.x=element_blank(),
+                      legend.position = "none") +
+  indian.plot +  theme(legend.position = "none") +
+    plot_layout(ncol=1) } +
+  plot_layout(ncol = 2)
+
+```
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+
+# You can also do this without brackets
+(grass.plot  + theme(axis.title.x=element_blank(), axis.text.x=element_blank(),
+                     legend.position = "none") |
+willis.plot + theme(axis.title.x=element_blank(), axis.text.x=element_blank(),
+                      legend.position = "none")) /
+indian.plot +   theme(legend.position = "bottom") 
+```
+

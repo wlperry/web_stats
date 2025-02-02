@@ -1,0 +1,156 @@
+---
+title: "Correlations"
+description: " "
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Objective
+
+The goal of this page is to learn to perform a correlation.
+
+## Correlation     
+
+##Load libraries
+We will read in the main files and load the libraries as we have worked with so far.      
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# One new package for summary stats
+# install.packages("broom")
+# install.packages("GGally")
+# install.packages("car")
+# install.packages("gvlma")
+# install.packages("corrplot")
+# install.packages("gvlma")
+
+# load the libraries each time you restart R
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(scales)
+library(skimr)
+library(janitor)
+library(patchwork)
+# library(reshape2)
+library(broom)
+library(GGally)
+library(corrplot)
+library(car)
+library(gvlma)
+```
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# read in the file
+iris.df <- read_csv("data/iris.csv") %>%
+  clean_names()
+
+glimpse(iris.df)
+
+```
+
+##Summary Statistics for the better look
+##So this is a lot different than thinking about data from excel    
+Lets try to do the summary stats on the data now and see how it differs
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# the data you want to look at
+skim(iris.df)
+
+```
+   
+## Long to Wide format
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# this will add an index to the dataframe so you know what individual is which
+iris_long.df <- iris.df %>% 
+  mutate(sample = row_number()) %>%
+  gather(part, measure, -species, -sample)
+
+```
+
+## Outliers
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# Box Plots of data
+iris_long.df %>% 
+  ggplot(aes(x = part, y = measure, color = species, fill=species))+
+  geom_boxplot(alpha=0.3) 
+```
+
+
+## Test for normality of data and using the broom package     
+So I think this is premature but some people like to test the normality of the data but really you should be assessing the normality of the residuals. But here it goes...
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# turn off scientific notaton
+options(scipen = 999)
+# to turn back on 
+#options(scipen = 0)
+
+# Test for normality of each group and store in shapirowilktests
+# This uses the broom package to get clean output of the test 
+iris_long.df %>% group_by(species, part) %>% do(tidy(shapiro.test(.$measure)))
+```  
+
+## Correlations Plots    
+This info is from:     
+http://stackoverflow.com/questions/29697009/correlation-matrix-plot-with-ggplot2      
+and    
+https://www.r-bloggers.com/plot-matrix-with-the-r-package-ggally/     
+and   
+http://ggobi.github.io/ggally/#canonical_correlation_analysis     
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+iris.df %>% 
+  select(sepal_length, sepal_width, petal_length, petal_width) %>%
+  ggpairs()
+```
+
+##Look at the correlation matrix    
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# correlation matrix of the data with only the numeric data in a dataframe
+# the old way - the same really
+# cor(setosa.df[,1:4], method = "pearson") # , method = c("pearson", "kendall", "spearman")
+# need to only have numeric varaibles
+iris.df %>% select(-species) %>% cor() 
+
+```
+
+
+## Correlation test
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+petals.cor <- cor.test(iris.df$petal_length, iris.df$petal_width)
+
+# can see by calling model
+petals.cor
+```
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# other way
+cor.test(~ petal_length + petal_width, iris.df)
+
+```
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# You can extract values from the cor.test() object like this:
+
+petals.cor$estimate
+
+petals.cor$p.value
+```
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# This calculates the correlation coefficient and the degrees of freedom
+iris.df %>% summarize(petal_cor = cor.test(petal_length, petal_width)$estimate,
+                   nuts_df = cor.test(petal_length, petal_width)$parameter,
+                   nuts.pvalue = cor.test(petal_length, petal_width)$p.value)
+```
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+iris.df %>%  do(tidy(cor.test(.$petal_length, .$petal_width))) 
+# can be done with grouping variables as well
+```
+
+
+
+
+   

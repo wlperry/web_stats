@@ -34,5 +34,50 @@
   },
   "06_ggplot.qmd": {
     "06_ggplot.html": "94bf74b7"
+  },
+  "09_ggplot_multiple_plots_patchwork.qmd": {
+    "09_ggplot_multiple_plots_patchwork.html": "c7ffada6"
+  },
+  "13_joining_data_frames.qmd": {
+    "13_joining_data_frames.html": "05c9526a"
+  },
+  "11_manipulating_summarizing.qmd": {
+    "11_manipulating_summarizing.html": "9199f871"
+  },
+  "12_manipulating_factors_forecats.qmd": {
+    "12_manipulating_factors_forecats.html": "e2d85d3e"
+  },
+  "10_manipulating_select_filter.qmd": {
+    "10_manipulating_select_filter.html": "21770694"
+  },
+  "15_regression.qmd": {
+    "15_regression.html": "e6443e3a"
+  },
+  "14_correlations.qmd": {
+    "14_correlations.html": "96e204e9"
+  },
+  "16_two_way_anova.qmd": {
+    "16_two_way_anova.html": "234f6b94"
+  },
+  "15_one_way_anova.qmd": {
+    "15_one_way_anova.html": "09a32375"
+  },
+  "15_t_test.qmd": {
+    "15_t_test.html": "0c67fdc9"
+  },
+  "15_correlations.qmd": {
+    "15_correlations.html": "dc134722"
+  },
+  "14_t_test.qmd": {
+    "14_t_test.html": "75891d25"
+  },
+  "16_regression.qmd": {
+    "16_regression.html": "e07416ba"
+  },
+  "17_one_way_anova.qmd": {
+    "17_one_way_anova.html": "2f573c0c"
+  },
+  "18_two_way_anova.qmd": {
+    "18_two_way_anova.html": "cfef518e"
   }
 }

@@ -1,0 +1,202 @@
+---
+title: "Two Way ANOVA"
+description: " "
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Objective
+
+The goal of this page is to learn to perform an two way ANOVA
+
+##Load libraries
+We will read in the main files and load the libraries as we have worked with so far.   
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# #Install Packages ----
+# install.packages("tidyverse")
+# install.packages("lubridate")
+# install.packages("scales")
+# install.packages("readxl")
+# install.packages("survminer")
+# install.packages("survival")
+# install.packages("patchwork")
+# install.packages("broom")
+# ANOVA specific
+# install.packages("car")
+# install.packages("emmeans")
+# install.packages("multcompView")
+
+
+#Load libraries ----
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(readxl)
+library(skimr)
+library(broom)
+library(janitor)
+# library(zoo)
+library(patchwork)
+library(car)
+library(emmeans)
+library(multcompView)
+
+```
+
+The data for this project was downloaded from 
+http://stat.pugetsound.edu/hoard/datasetDetails.aspx?id=1
+
+This is a super fun data set in my opinion on m&m's
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# read file----
+mm.df <- read_csv("data/mms.csv")
+```
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+mm.df %>% 
+  ggplot(aes(center, color=color)) +
+  stat_summary(aes(y = mass ),
+               fun.y = mean,
+               geom = "point",
+               size = 4,
+               position = position_dodge(0.3),
+               na.rm = TRUE) +
+  stat_summary(aes(y = mass),
+               fun.data = mean_se,
+               geom = "errorbar",
+               width = 0.2,
+               position = position_dodge(0.3),
+               na.rm = TRUE) 
+```
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+mm.df <- mm.df %>%
+  mutate(
+    center = as.factor(center),
+    color = as.factor(color)
+  )
+```
+
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+mm.df <- mm.df %>%
+  mutate(
+    center = fct_relevel(center, 
+                         "plain", "peanut butter", "peanut"),
+    color = fct_relevel(color, 
+                        "red", "blue", "brown", "green", "orange", "yellow" )
+  )
+```
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# Set it up for Type III SS ANOVA
+options(contrasts = c("contr.sum", "contr.poly"))
+```
+
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# Fit the linear model and conduct ANOVA
+model = lm(mass ~ center*color, data=mm.df)
+Anova(model, type="III")       # Use type="III" ALWAYS!!!!
+```
+
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# Post F test of interactions -----
+model.emm <- emmeans(model, ~ center * color)
+```
+
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# plot of comparisons
+# blue are confidence intervals, red arrows overlap mean no significant diff
+plot(model.emm, comparisons = TRUE)
+```
+
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# pairwise
+emminteraction = emmeans(model, 
+                         pairwise ~ center:color,
+                         adjust="bonferroni")
+
+emminteraction$contrasts
+```
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# # CLD 
+multcomp::cld(model.emm,
+    Letters = letters,
+    adjust="bonferroni") # can be bonferroni- as well
+```
+
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# assumptions ----
+# Homogeneity of variance----
+# 1. Homogeneity of variances-----
+plot(model, 1)
+# Levene test homogeneity of variance ----
+leveneTest(mass ~ center*color, data=mm.df)
+```
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+#Normality of residuals------
+plot(model, 2)
+```
+
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# Normality of resituals qqnorm-----
+qqnorm(model$res)
+```
+
+
+
+
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, error=FALSE}
+# Shapiro test ----
+shapiro.test(model$res)
+```
+
+

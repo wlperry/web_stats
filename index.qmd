@@ -4,7 +4,7 @@ description: "2024 R stats for biology students – an introduction to R, RStudi
 format: 
   html:
     toc: true
-    toc-depth: 2
+    toc-depth: 3
 ---
 
 ::: {style="text-align: center;"}
@@ -21,20 +21,67 @@ For a complete list of example data files, please see the [Example Data Files pa
 
 ## Topics Covered
 
-####      [**R Resources** – Super helpful links and ideas](01_resources.qmd)
+### R_esources that can help you a lot
 
-####      [**Setting Up R & RStudio** – Installation and essential libraries](02_installing_r.qmd)
+[link to resources](01_resources.qmd)
 
-####      [**Installing Packages & Libraries**](03_installing_libraries.qmd)
+### Setting up R and RStudio
 
-####      [**Project Management Basics**](04_project_setup.qmd)
+[installing R](02_installing_r.qmd)
 
-####      [**Reading & Writing Files**](05_reading_files.qmd)
+### Installing packages/libraries
 
-####      [**GGPlot Basics** – Getting started with plots](06_ggplot.qmd)
+[how to do this](03_installing_libraries.qmd)
 
-####      [**Customizing GGPlots**](07_customize_ggplots.qmd)
+### Project set up if using raw code
 
-####      [**Summary Statistics with GGPlot** – Mean and Standard Error plots](08_ggplot_summary_plots.qmd)
+[projects](04_project_setup.qmd)
 
-#### 
+### Reading and writing files into R
+
+[Reading and Writing](05_reading_files.qmd)
+
+### Basics of GGplot
+
+[The basics](06_ggplot.qmd)
+
+### Customizing colors and shapes in GGPlot
+
+[how to change things](07_customize_ggplots.qmd)
+
+### Making Mean and SE plots in GGPLOT
+
+[Easy Mean SE Plots](08_ggplot_summary_plots.qmd)
+
+### Multiple panel plots
+
+[Using patchwork for multiple plots](09_ggplot_multiple_plots_patchwork.qmd)
+
+### Select and filter to change datframes
+
+[How to select columns and filter rows](10_manipulating_select_filter.qmd)
+
+### Summarizing data
+[How to summarize mean and SE values](11_manipulating_summarizing.qmd)
+
+### Manipulating factors
+[How to work with Factors and Forecats and reorder](12_manipulating_factors_forecats.qmd)
+
+### Joining dataframes
+[How to bring two datafames together](13_joining_data_frames.qmd)
+
+### T-Tests
+[How to do a T - Test](14_t_test.qmd)
+
+### Correlations
+[How to do a correlation](15_correlations.qmd)
+
+### Regression
+[How to do a regression](16_regression.qmd)
+
+### One Way ANOVA
+[How to do a One Way ANOVA](17_one_way_anova.qmd)
+
+### Two Way ANOVA
+[How to do a Two Way ANOVA](18_two_way_anova.qmd)
+
